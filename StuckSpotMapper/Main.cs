@@ -110,12 +110,18 @@ Confused! for version 262
 
 			g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
 
-			Brush b =  new SolidBrush(Color.FromArgb (128, 255, 1, 1));
+			Brush stuck =  new SolidBrush(Color.FromArgb (128, 255, 1, 1));
+			Brush other =  new SolidBrush(Color.FromArgb (128, 1,1, 255));
 			float[] vec;
 			foreach (Annotation a in annotations) {			
 				vec = minimap.CalculateOffset(a.x,a.y,a.z, overview.Width);
 				//Console.WriteLine(a.ToString() + vec[0]+ " " + vec[2]);
-				g.FillRectangle(b,vec[0] -2, vec[2]-2, 4,4);
+				if(a.text.ToLower().Contains("stuck")){
+					g.FillRectangle(stuck,vec[0] -2, vec[2]-2, 4,4);
+				}
+				else{
+					g.FillRectangle(other,vec[0] -2, vec[2]-2, 4,4);
+				}
 			}
 
 			g.Flush();
