@@ -12,8 +12,8 @@ namespace StuckSpotMapper
 		{
 			String map = "ns2_tram";
 			String version = "261";
-			Bitmap overview;
-			MapExtract.Map level;
+			Bitmap overview = new Bitmap(1024,1024);
+			MapExtract.Map level=null; 	
 			List<Annotation> annotations; 
 			//Print info
 			Console.WriteLine (@"Annotation grapher
@@ -40,7 +40,7 @@ Confused! for version 262
 				;
 			} else {
 				Console.WriteLine ("No Overview for map (" + map + ")");
-				return;
+				//return;
 			}
 
 			//parse the level for the size/origin.
@@ -50,7 +50,7 @@ Confused! for version 262
 
 			} else {
 				Console.WriteLine("Cannot locate level file for ("+map+")");
-				return;
+				//return;
 			}
 
 			//load the level from hive.
@@ -72,12 +72,14 @@ Confused! for version 262
 		protected static void DrawDots (string map, ref Bitmap overview, MapExtract.Map lvl, List<Annotation> annotations)
 		{
 			minimap_extents minimap = null;
-			foreach (MapExtract.EntityInstance ent in lvl.Entities) {
-				Console.WriteLine (ent.EntityName);
-				if (ent.EntityName == "minimap_extents") {
-					MapExtract.Types.VectorType origin = (MapExtract.Types.VectorType)ent.Fields ["origin"];
-					MapExtract.Types.VectorType scale = (MapExtract.Types.VectorType)ent.Fields ["scale"];
-					minimap = new minimap_extents (origin.X, origin.Y, origin.Z, scale.X, scale.Y, scale.Z);
+			if (lvl != null) {
+				foreach (MapExtract.EntityInstance ent in lvl.Entities) {
+					Console.WriteLine (ent.EntityName);
+					if (ent.EntityName == "minimap_extents") {
+						MapExtract.Types.VectorType origin = (MapExtract.Types.VectorType)ent.Fields ["origin"];
+						MapExtract.Types.VectorType scale = (MapExtract.Types.VectorType)ent.Fields ["scale"];
+						minimap = new minimap_extents (origin.X, origin.Y, origin.Z, scale.X, scale.Y, scale.Z);
+					}
 				}
 			}
 			if (minimap == null) {
